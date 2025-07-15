@@ -271,23 +271,27 @@ async def check_course_access(course_id: str, current_user: UserInDB):
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
     
+    # Admin can access all courses
+    if current_user.role == UserRole.ADMIN:
+        return course
+    
     # Instructor can access their own courses
     if current_user.role == UserRole.INSTRUCTOR and course["instructor_id"] == current_user.id:
         return course
     
-    # Students can access if enrolled
+    # Students can access if enrolled OR if course is published (for viewing before enrollment)
     if current_user.role == UserRole.STUDENT:
+        # Check if student is enrolled
         enrollment = await db.enrollments.find_one({
             "student_id": current_user.id,
             "course_id": course_id
         })
-        if not enrollment:
-            raise HTTPException(status_code=403, detail="Not enrolled in this course")
-        return course
-    
-    # Admin can access all courses
-    if current_user.role == UserRole.ADMIN:
-        return course
+        if enrollment:
+            return course
+        
+        # Allow access to published courses for browsing
+        if course.get("is_published", False):
+            return course
     
     raise HTTPException(status_code=403, detail="Access denied")
 
