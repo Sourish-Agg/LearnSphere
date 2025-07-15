@@ -671,12 +671,16 @@ async def get_discussions(course_id: str, current_user: UserInDB = Depends(get_c
     
     discussions = await db.discussions.find({"course_id": course_id}).to_list(1000)
     
-    # Add creator info
+    # Add creator info and clean MongoDB ObjectId fields
+    result = []
     for discussion in discussions:
         creator = await db.users.find_one({"id": discussion["created_by"]})
-        discussion["creator_name"] = creator["full_name"] if creator else "Unknown"
+        # Remove MongoDB ObjectId fields
+        clean_discussion = {k: v for k, v in discussion.items() if k != "_id"}
+        clean_discussion["creator_name"] = creator["full_name"] if creator else "Unknown"
+        result.append(clean_discussion)
     
-    return discussions
+    return result
 
 @api_router.post("/discussions/{discussion_id}/replies", response_model=Reply)
 async def create_reply(
