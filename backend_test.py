@@ -370,6 +370,335 @@ class LearnSphereAPITester:
             if success:
                 self.log(f"   Student has {len(response)} enrollments")
 
+    def test_modules(self):
+        """Test course modules functionality"""
+        self.log("\n=== Testing Course Modules ===")
+        
+        if 'test_course' in self.courses and 'instructor' in self.tokens:
+            course_id = self.courses['test_course']['id']
+            
+            # Test module creation by instructor
+            module_data = {
+                "title": "Introduction Module",
+                "description": "This is the first module of the course",
+                "content": "Welcome to the course! This module covers basic concepts.",
+                "order": 1,
+                "content_type": "text"
+            }
+            
+            success, response = self.run_test(
+                "Create module (instructor)",
+                "POST",
+                f"courses/{course_id}/modules",
+                200,
+                data=module_data,
+                user_token=self.tokens['instructor']
+            )
+            
+            if success:
+                self.courses['test_module'] = response
+                self.log(f"   Created module ID: {response.get('id')}")
+                
+            # Test module creation by student (should fail)
+            if 'student' in self.tokens:
+                self.run_test(
+                    "Create module (student - should fail)",
+                    "POST",
+                    f"courses/{course_id}/modules",
+                    403,
+                    data=module_data,
+                    user_token=self.tokens['student']
+                )
+                
+            # Test getting modules
+            for role, token in self.tokens.items():
+                if role in ['instructor', 'student']:  # Only enrolled users can see modules
+                    self.run_test(
+                        f"Get modules ({role})",
+                        "GET",
+                        f"courses/{course_id}/modules",
+                        200,
+                        user_token=token
+                    )
+
+    def test_assignments(self):
+        """Test assignment functionality"""
+        self.log("\n=== Testing Assignments ===")
+        
+        if 'test_course' in self.courses and 'instructor' in self.tokens:
+            course_id = self.courses['test_course']['id']
+            
+            # Test assignment creation by instructor
+            assignment_data = {
+                "title": "First Assignment",
+                "description": "Complete the reading and answer questions",
+                "due_date": "2024-12-31T23:59:59",
+                "max_score": 100,
+                "instructions": "Read chapter 1 and answer all questions in detail."
+            }
+            
+            success, response = self.run_test(
+                "Create assignment (instructor)",
+                "POST",
+                f"courses/{course_id}/assignments",
+                200,
+                data=assignment_data,
+                user_token=self.tokens['instructor']
+            )
+            
+            if success:
+                self.courses['test_assignment'] = response
+                assignment_id = response.get('id')
+                self.log(f"   Created assignment ID: {assignment_id}")
+                
+                # Test assignment submission by student
+                if 'student' in self.tokens:
+                    submission_data = {
+                        "assignment_id": assignment_id,
+                        "content": "This is my submission for the first assignment.",
+                        "file_path": None
+                    }
+                    
+                    success, sub_response = self.run_test(
+                        "Submit assignment (student)",
+                        "POST",
+                        f"assignments/{assignment_id}/submissions",
+                        200,
+                        data=submission_data,
+                        user_token=self.tokens['student']
+                    )
+                    
+                    if success:
+                        self.courses['test_submission'] = sub_response
+                        
+                    # Test duplicate submission (should fail)
+                    self.run_test(
+                        "Duplicate assignment submission (should fail)",
+                        "POST",
+                        f"assignments/{assignment_id}/submissions",
+                        400,
+                        data=submission_data,
+                        user_token=self.tokens['student']
+                    )
+                    
+                # Test getting submissions
+                self.run_test(
+                    "Get assignment submissions (instructor)",
+                    "GET",
+                    f"assignments/{assignment_id}/submissions",
+                    200,
+                    user_token=self.tokens['instructor']
+                )
+                
+                if 'student' in self.tokens:
+                    self.run_test(
+                        "Get assignment submissions (student)",
+                        "GET",
+                        f"assignments/{assignment_id}/submissions",
+                        200,
+                        user_token=self.tokens['student']
+                    )
+                    
+                # Test grading submission
+                if 'test_submission' in self.courses:
+                    submission_id = self.courses['test_submission']['id']
+                    grade_data = {
+                        "score": 85,
+                        "feedback": "Good work! Consider expanding on point 3."
+                    }
+                    
+                    self.run_test(
+                        "Grade submission (instructor)",
+                        "PUT",
+                        f"submissions/{submission_id}/grade",
+                        200,
+                        data=grade_data,
+                        user_token=self.tokens['instructor']
+                    )
+                    
+            # Test getting assignments
+            for role, token in self.tokens.items():
+                if role in ['instructor', 'student']:
+                    self.run_test(
+                        f"Get assignments ({role})",
+                        "GET",
+                        f"courses/{course_id}/assignments",
+                        200,
+                        user_token=token
+                    )
+
+    def test_quizzes(self):
+        """Test quiz functionality"""
+        self.log("\n=== Testing Quizzes ===")
+        
+        if 'test_course' in self.courses and 'instructor' in self.tokens:
+            course_id = self.courses['test_course']['id']
+            
+            # Test quiz creation by instructor
+            quiz_data = {
+                "title": "Chapter 1 Quiz",
+                "description": "Test your knowledge of chapter 1 concepts",
+                "duration_minutes": 30,
+                "max_attempts": 2,
+                "questions": [
+                    {
+                        "question": "What is the capital of France?",
+                        "options": ["London", "Berlin", "Paris", "Madrid"],
+                        "correct_answer": 2,
+                        "points": 1
+                    },
+                    {
+                        "question": "Which programming language is this course about?",
+                        "options": ["Java", "Python", "C++", "JavaScript"],
+                        "correct_answer": 1,
+                        "points": 1
+                    }
+                ]
+            }
+            
+            success, response = self.run_test(
+                "Create quiz (instructor)",
+                "POST",
+                f"courses/{course_id}/quizzes",
+                200,
+                data=quiz_data,
+                user_token=self.tokens['instructor']
+            )
+            
+            if success:
+                self.courses['test_quiz'] = response
+                quiz_id = response.get('id')
+                self.log(f"   Created quiz ID: {quiz_id}")
+                
+                # Test quiz attempt by student
+                if 'student' in self.tokens:
+                    attempt_data = {
+                        "quiz_id": quiz_id,
+                        "answers": [
+                            {"answer": 2},  # Correct answer for question 1
+                            {"answer": 1}   # Correct answer for question 2
+                        ]
+                    }
+                    
+                    success, attempt_response = self.run_test(
+                        "Submit quiz attempt (student)",
+                        "POST",
+                        f"quizzes/{quiz_id}/attempts",
+                        200,
+                        data=attempt_data,
+                        user_token=self.tokens['student']
+                    )
+                    
+                    if success:
+                        self.log(f"   Quiz score: {attempt_response.get('score')}/{attempt_response.get('max_score')}")
+                        
+                    # Test getting quiz attempts
+                    self.run_test(
+                        "Get quiz attempts (student)",
+                        "GET",
+                        f"quizzes/{quiz_id}/attempts",
+                        200,
+                        user_token=self.tokens['student']
+                    )
+                    
+                    self.run_test(
+                        "Get quiz attempts (instructor)",
+                        "GET",
+                        f"quizzes/{quiz_id}/attempts",
+                        200,
+                        user_token=self.tokens['instructor']
+                    )
+                    
+            # Test getting quizzes
+            for role, token in self.tokens.items():
+                if role in ['instructor', 'student']:
+                    self.run_test(
+                        f"Get quizzes ({role})",
+                        "GET",
+                        f"courses/{course_id}/quizzes",
+                        200,
+                        user_token=token
+                    )
+
+    def test_discussions(self):
+        """Test discussion functionality"""
+        self.log("\n=== Testing Discussions ===")
+        
+        if 'test_course' in self.courses:
+            course_id = self.courses['test_course']['id']
+            
+            # Test discussion creation by instructor
+            if 'instructor' in self.tokens:
+                discussion_data = {
+                    "title": "Welcome Discussion",
+                    "content": "Welcome to the course! Please introduce yourselves here."
+                }
+                
+                success, response = self.run_test(
+                    "Create discussion (instructor)",
+                    "POST",
+                    f"courses/{course_id}/discussions",
+                    200,
+                    data=discussion_data,
+                    user_token=self.tokens['instructor']
+                )
+                
+                if success:
+                    self.courses['test_discussion'] = response
+                    discussion_id = response.get('id')
+                    self.log(f"   Created discussion ID: {discussion_id}")
+                    
+                    # Test reply creation by student
+                    if 'student' in self.tokens:
+                        reply_data = {
+                            "content": "Hello everyone! I'm excited to be part of this course."
+                        }
+                        
+                        self.run_test(
+                            "Create reply (student)",
+                            "POST",
+                            f"discussions/{discussion_id}/replies",
+                            200,
+                            data=reply_data,
+                            user_token=self.tokens['student']
+                        )
+                        
+                        # Test getting replies
+                        self.run_test(
+                            "Get discussion replies",
+                            "GET",
+                            f"discussions/{discussion_id}/replies",
+                            200,
+                            user_token=self.tokens['student']
+                        )
+                        
+            # Test discussion creation by student
+            if 'student' in self.tokens:
+                student_discussion_data = {
+                    "title": "Question about Assignment",
+                    "content": "I have a question about the first assignment. Can someone help?"
+                }
+                
+                self.run_test(
+                    "Create discussion (student)",
+                    "POST",
+                    f"courses/{course_id}/discussions",
+                    200,
+                    data=student_discussion_data,
+                    user_token=self.tokens['student']
+                )
+                
+            # Test getting discussions
+            for role, token in self.tokens.items():
+                if role in ['instructor', 'student']:
+                    self.run_test(
+                        f"Get discussions ({role})",
+                        "GET",
+                        f"courses/{course_id}/discussions",
+                        200,
+                        user_token=token
+                    )
+
     def run_all_tests(self):
         """Run all API tests"""
         self.log("🚀 Starting LearnSphere API Tests")
