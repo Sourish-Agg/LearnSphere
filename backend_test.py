@@ -11,7 +11,7 @@ from datetime import datetime
 import uuid
 
 class LearnSphereAPITester:
-    def __init__(self, base_url="https://bf6245ba-628d-4f62-8002-e4d50439359a.preview.emergentagent.com"):
+    def __init__(self, base_url="https://ee3a184d-350f-44eb-8e82-5bc2cf61d6a2.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tokens = {}  # Store tokens for different users
