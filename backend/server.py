@@ -82,8 +82,12 @@ class CourseBase(BaseModel):
     max_students: int = 50
     is_published: bool = False
 
-class CourseCreate(CourseBase):
-    pass
+class CourseCreate(BaseModel):
+    title: str
+    description: str
+    duration_weeks: int = 8
+    max_students: int = 50
+    is_published: bool = False
 
 class Course(CourseBase):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
