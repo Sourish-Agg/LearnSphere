@@ -554,7 +554,9 @@ async def grade_submission(
     await db.submissions.update_one({"id": submission_id}, {"$set": update_data})
     
     updated_submission = await db.submissions.find_one({"id": submission_id})
-    return dict(updated_submission)
+    # Remove MongoDB ObjectId fields
+    clean_submission = {k: v for k, v in updated_submission.items() if k != "_id"}
+    return clean_submission
 
 # Quiz Routes
 @api_router.post("/courses/{course_id}/quizzes", response_model=Quiz)
