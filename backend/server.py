@@ -719,12 +719,16 @@ async def get_replies(discussion_id: str, current_user: UserInDB = Depends(get_c
     
     replies = await db.replies.find({"discussion_id": discussion_id}).to_list(1000)
     
-    # Add creator info
+    # Add creator info and clean MongoDB ObjectId fields
+    result = []
     for reply in replies:
         creator = await db.users.find_one({"id": reply["created_by"]})
-        reply["creator_name"] = creator["full_name"] if creator else "Unknown"
+        # Remove MongoDB ObjectId fields
+        clean_reply = {k: v for k, v in reply.items() if k != "_id"}
+        clean_reply["creator_name"] = creator["full_name"] if creator else "Unknown"
+        result.append(clean_reply)
     
-    return replies
+    return result
 
 # Enrollment Routes
 @api_router.post("/enrollments", response_model=Enrollment)
