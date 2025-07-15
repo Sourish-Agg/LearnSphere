@@ -722,6 +722,12 @@ class LearnSphereAPITester:
             self.test_enrollments()
             self.test_get_enrollments()
             
+            # Test enhanced features
+            self.test_modules()
+            self.test_assignments()
+            self.test_quizzes()
+            self.test_discussions()
+            
         except Exception as e:
             self.log(f"Critical error during testing: {str(e)}", "ERROR")
             
