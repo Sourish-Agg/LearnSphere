@@ -516,7 +516,14 @@ async def get_submissions(
             student = await db.users.find_one({"id": submission["student_id"]})
             submission["student_name"] = student["full_name"] if student else "Unknown"
     
-    return [dict(submission) for submission in submissions]
+    # Convert MongoDB documents to dict and remove MongoDB ObjectId fields
+    result = []
+    for submission in submissions:
+        # Remove MongoDB ObjectId fields
+        clean_submission = {k: v for k, v in submission.items() if k != "_id"}
+        result.append(clean_submission)
+    
+    return result
 
 @api_router.put("/submissions/{submission_id}/grade")
 async def grade_submission(
