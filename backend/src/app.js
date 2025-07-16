@@ -14,6 +14,9 @@ const quizRoutes = require('./routes/quizzes');
 const discussionRoutes = require('./routes/discussions');
 const enrollmentRoutes = require('./routes/enrollments');
 const dashboardRoutes = require('./routes/dashboard');
+const uploadRoutes = require('./routes/upload');
+const progressRoutes = require('./routes/progress');
+const courseraRoutes = require('./routes/coursera');
 
 const app = express();
 
