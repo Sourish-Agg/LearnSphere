@@ -1,17 +1,17 @@
 {
   "summary": {
     "total": 17,
-    "passed": 15,
-    "failed": 2,
+    "passed": 17,
+    "failed": 0,
     "errors": 0,
-    "success_rate": 88.23529411764706
+    "success_rate": 100.0
   },
   "detailed_results": {
     "file_upload": {
       "single_upload": {
         "status": "success",
-        "filename": "test_document-1752690137712-0363d1f4-820e-4506-b5d5-f627a3d221cd.pdf",
-        "file_id": "d1aa2593-931b-4563-83e9-4ddd9ef37765"
+        "filename": "test_document-1752690158861-6819ceb1-1b92-402c-bd1b-11eaa124bb7e.pdf",
+        "file_id": "37b32a14-d1bf-4540-8f94-15e9a98afbed"
       },
       "multiple_upload": {
         "status": "success",
@@ -21,19 +21,19 @@
         "status": "success",
         "stats": {
           "videos": {
-            "file_count": 2,
-            "total_size": 36,
-            "size_formatted": "36 B"
+            "file_count": 3,
+            "total_size": 54,
+            "size_formatted": "54 B"
           },
           "pdfs": {
-            "file_count": 2,
-            "total_size": 108,
-            "size_formatted": "108 B"
+            "file_count": 3,
+            "total_size": 162,
+            "size_formatted": "162 B"
           },
           "images": {
-            "file_count": 2,
-            "total_size": 36,
-            "size_formatted": "36 B"
+            "file_count": 3,
+            "total_size": 54,
+            "size_formatted": "54 B"
           },
           "others": {
             "file_count": 0,
@@ -51,17 +51,28 @@
     },
     "progress_tracking": {
       "initialization": {
-        "status": "failed",
-        "error": "404 - {\"detail\":\"Student not enrolled in this course\"}"
+        "status": "success"
       },
       "student_progress": {
-        "status": "failed",
-        "error": "404 - {\"detail\":\"Student not enrolled in this course\"}"
+        "status": "success",
+        "summary": {
+          "total_items": 0,
+          "completed_items": 0,
+          "in_progress_items": 0,
+          "not_started_items": 0,
+          "overdue_items": 0,
+          "overall_progress": 0,
+          "total_time_spent": 0,
+          "total_score": 0,
+          "total_max_score": 0,
+          "average_score": 0,
+          "by_type": {}
+        }
       },
       "course_progress": {
         "status": "success",
         "statistics": {
-          "total_students": 0,
+          "total_students": 1,
           "completed_students": 0,
           "average_progress": 0,
           "completion_rate": 0
@@ -70,7 +81,7 @@
       "dashboard": {
         "status": "success",
         "summary": {
-          "total_courses": 1,
+          "total_courses": 2,
           "completed_courses": 0,
           "average_progress": 0,
           "overdue_items": 0,
@@ -101,7 +112,7 @@
       },
       "course_import": {
         "status": "success",
-        "imported_course_id": "4ebb129a-8ebf-416b-8ae6-b9a09ecc8978"
+        "imported_course_id": "aa2d0f21-25c3-45c6-b40e-b92e9ac85777"
       },
       "import_history": {
         "status": "success",
