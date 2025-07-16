@@ -10,10 +10,13 @@ const Login = ({ onToggle }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted with:', { email, password });
     setLoading(true);
     setError('');
 
+    console.log('Calling login function...');
     const result = await login(email, password);
+    console.log('Login result:', result);
     
     if (!result.success) {
       setError(result.error);
