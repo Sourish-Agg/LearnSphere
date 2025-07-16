@@ -96,7 +96,8 @@ class LearnSphereAPITester:
                     "title": "Test Course for API Testing",
                     "description": "A test course for validating API functionality",
                     "duration_weeks": 4,
-                    "max_students": 20
+                    "max_students": 20,
+                    "is_published": True  # Publish immediately
                 },
                 headers=self.get_auth_headers("instructor")
             )
@@ -105,6 +106,9 @@ class LearnSphereAPITester:
                 course_data = response.json()
                 self.test_course_id = course_data.get("id")
                 self.log(f"✅ Test course created: {self.test_course_id}")
+                
+                # Enroll student in the course
+                self.enroll_student_in_course()
                 return True
             else:
                 self.log(f"❌ Failed to create test course: {response.status_code} - {response.text}", "ERROR")
@@ -112,6 +116,31 @@ class LearnSphereAPITester:
                 
         except Exception as e:
             self.log(f"❌ Error creating test course: {str(e)}", "ERROR")
+            return False
+
+    def enroll_student_in_course(self):
+        """Enroll the test student in the test course"""
+        if not self.test_course_id:
+            return False
+            
+        try:
+            response = self.session.post(f"{BACKEND_URL}/enrollments",
+                json={"course_id": self.test_course_id},
+                headers=self.get_auth_headers("student")
+            )
+            
+            if response.status_code == 201:
+                self.log(f"✅ Student enrolled in test course")
+                return True
+            elif response.status_code == 400 and "Already enrolled" in response.text:
+                self.log(f"ℹ️  Student already enrolled in test course")
+                return True
+            else:
+                self.log(f"❌ Failed to enroll student: {response.status_code} - {response.text}", "ERROR")
+                return False
+                
+        except Exception as e:
+            self.log(f"❌ Error enrolling student: {str(e)}", "ERROR")
             return False
 
     def test_file_upload_system(self):
