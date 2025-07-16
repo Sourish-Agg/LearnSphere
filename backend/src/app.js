@@ -58,6 +58,9 @@ app.use('/api/courses', quizRoutes);
 app.use('/api/courses', discussionRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/uploads', uploadRoutes);
+app.use('/api/progress', progressRoutes);
+app.use('/api/coursera', courseraRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
