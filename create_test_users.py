@@ -6,7 +6,7 @@ Create test users for LearnSphere LMS testing
 import requests
 import json
 
-BACKEND_URL = "https://54daeaf5-e884-47a7-b051-f532ebef312e.preview.emergentagent.com/api"
+BACKEND_URL = "https://b77a6ae7-123f-4230-b258-9cac6644c213.preview.emergentagent.com/api"
 
 def create_test_users():
     """Create test users for testing"""

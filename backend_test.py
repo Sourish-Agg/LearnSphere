@@ -11,7 +11,7 @@ import time
 from io import BytesIO
 
 # Configuration
-BACKEND_URL = "https://54daeaf5-e884-47a7-b051-f532ebef312e.preview.emergentagent.com/api"
+BACKEND_URL = "https://b77a6ae7-123f-4230-b258-9cac6644c213.preview.emergentagent.com/api"
 TEST_EMAIL = "instructor@learnsphere.com"
 TEST_PASSWORD = "instructor123"
 STUDENT_EMAIL = "student@learnsphere.com"

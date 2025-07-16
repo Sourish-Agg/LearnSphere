@@ -6,7 +6,7 @@ Enroll test student in test course and publish course
 import requests
 import json
 
-BACKEND_URL = "https://54daeaf5-e884-47a7-b051-f532ebef312e.preview.emergentagent.com/api"
+BACKEND_URL = "https://b77a6ae7-123f-4230-b258-9cac6644c213.preview.emergentagent.com/api"
 STUDENT_EMAIL = "student@learnsphere.com"
 STUDENT_PASSWORD = "student123"
 INSTRUCTOR_EMAIL = "instructor@learnsphere.com"
