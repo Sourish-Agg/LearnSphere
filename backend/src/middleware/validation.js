@@ -121,4 +121,26 @@ class ValidationMiddleware {
   }
 }
 
+  // Progress validation middlewares
+  static validateProgressId() {
+    return ValidationMiddleware.validateParam('progress_id');
+  }
+
+  static validateStudentId() {
+    return ValidationMiddleware.validateParam('student_id');
+  }
+
+  // Generic parameter validation
+  static validateParam(paramName) {
+    return (req, res, next) => {
+      const value = req.params[paramName];
+      if (!value || typeof value !== 'string' || value.trim() === '') {
+        return res.status(400).json({
+          detail: `Invalid ${paramName} parameter`
+        });
+      }
+      next();
+    };
+  }
+
 module.exports = ValidationMiddleware;
