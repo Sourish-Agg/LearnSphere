@@ -1,8 +1,110 @@
 {
-  "summary": false,
+  "summary": {
+    "total": 17,
+    "passed": 14,
+    "failed": 3,
+    "errors": 0,
+    "success_rate": 82.35294117647058
+  },
   "detailed_results": {
-    "file_upload": {},
-    "progress_tracking": {},
-    "coursera_integration": {}
+    "file_upload": {
+      "single_upload": {
+        "status": "success",
+        "filename": "test_document-1752690026089-2c8a8574-3b2e-4b9e-822b-75c1e8f1ac82.pdf",
+        "file_id": "0d523cb1-4163-442e-9789-273c5c249f49"
+      },
+      "multiple_upload": {
+        "status": "success",
+        "files_count": 2
+      },
+      "storage_stats": {
+        "status": "success",
+        "stats": {
+          "videos": {
+            "file_count": 1,
+            "total_size": 18,
+            "size_formatted": "18 B"
+          },
+          "pdfs": {
+            "file_count": 1,
+            "total_size": 54,
+            "size_formatted": "54 B"
+          },
+          "images": {
+            "file_count": 1,
+            "total_size": 18,
+            "size_formatted": "18 B"
+          },
+          "others": {
+            "file_count": 0,
+            "total_size": 0,
+            "size_formatted": "0 B"
+          }
+        }
+      },
+      "file_serving": {
+        "status": "success"
+      },
+      "auth_test": {
+        "status": "success"
+      }
+    },
+    "progress_tracking": {
+      "initialization": {
+        "status": "failed",
+        "error": "404 - {\"detail\":\"Student not enrolled in this course\"}"
+      },
+      "student_progress": {
+        "status": "failed",
+        "error": "500 - <!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>TypeError: Validators.isValidUUID is not a function<br> &nbsp; &nbsp;at /app/backend/src/middleware/validation.js:84:33<br> &nbsp; &nbsp;at Layer.handle [as handle_request] (/app/backend/node_modules/express/lib/router/layer.js:95:5)<br> &nbsp; &nbsp;at next (/app/backend/node_modules/express/lib/router/route.js:149:13)<br> &nbsp; &nbsp;at /app/backend/src/middleware/validation.js:141:7<br> &nbsp; &nbsp;at Layer.handle [as handle_request] (/app/backend/node_modules/express/lib/router/layer.js:95:5)<br> &nbsp; &nbsp;at next (/app/backend/node_modules/express/lib/router/route.js:149:13)<br> &nbsp; &nbsp;at authenticate (/app/backend/src/middleware/auth.js:34:7)<br> &nbsp; &nbsp;at process.processTicksAndRejections (node:internal/process/task_queues:95:5)</pre>\n</body>\n</html>\n"
+      },
+      "course_progress": {
+        "status": "failed",
+        "error": "500 - <!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>TypeError: Validators.isValidUUID is not a function<br> &nbsp; &nbsp;at /app/backend/src/middleware/validation.js:84:33<br> &nbsp; &nbsp;at Layer.handle [as handle_request] (/app/backend/node_modules/express/lib/router/layer.js:95:5)<br> &nbsp; &nbsp;at next (/app/backend/node_modules/express/lib/router/route.js:149:13)<br> &nbsp; &nbsp;at /app/backend/src/middleware/auth.js:77:7<br> &nbsp; &nbsp;at Layer.handle [as handle_request] (/app/backend/node_modules/express/lib/router/layer.js:95:5)<br> &nbsp; &nbsp;at next (/app/backend/node_modules/express/lib/router/route.js:149:13)<br> &nbsp; &nbsp;at authenticate (/app/backend/src/middleware/auth.js:34:7)<br> &nbsp; &nbsp;at process.processTicksAndRejections (node:internal/process/task_queues:95:5)</pre>\n</body>\n</html>\n"
+      },
+      "dashboard": {
+        "status": "success",
+        "summary": {
+          "total_courses": 0,
+          "completed_courses": 0,
+          "average_progress": 0,
+          "overdue_items": 0,
+          "upcoming_deadlines": 0
+        }
+      },
+      "overdue_items": {
+        "status": "success",
+        "count": 0
+      },
+      "upcoming_deadlines": {
+        "status": "success",
+        "count": 0
+      }
+    },
+    "coursera_integration": {
+      "connection_test": {
+        "status": "success",
+        "connection_status": "demo_mode"
+      },
+      "course_search": {
+        "status": "success",
+        "courses_found": 1
+      },
+      "course_details": {
+        "status": "success",
+        "course_name": "Machine Learning"
+      },
+      "course_import": {
+        "status": "success",
+        "imported_course_id": "b7b7e538-65cd-4dd6-b6bb-b7bcc971e8df"
+      },
+      "import_history": {
+        "status": "success",
+        "imported_courses_count": 0
+      },
+      "auth_test": {
+        "status": "success"
+      }
+    }
   }
 }
