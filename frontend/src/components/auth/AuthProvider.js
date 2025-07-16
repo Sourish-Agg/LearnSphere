@@ -28,16 +28,21 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
+    console.log('Login attempt started:', { email, API });
     try {
+      console.log('Making API call to:', `${API}/auth/login`);
       const response = await axios.post(`${API}/auth/login`, { email, password });
+      console.log('API response received:', response.data);
       const { access_token, user: userData } = response.data;
       
       localStorage.setItem('token', access_token);
       setToken(access_token);
       setUser(userData);
       
+      console.log('Login successful, user set:', userData);
       return { success: true };
     } catch (error) {
+      console.error('Login error:', error);
       return { success: false, error: error.response?.data?.detail || 'Login failed' };
     }
   };
