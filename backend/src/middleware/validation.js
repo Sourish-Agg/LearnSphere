@@ -119,7 +119,6 @@ class ValidationMiddleware {
   static validateSubmissionId() {
     return ValidationMiddleware.validateUUID('submission_id');
   }
-}
 
   // Progress validation middlewares
   static validateProgressId() {
@@ -142,5 +141,6 @@ class ValidationMiddleware {
       next();
     };
   }
+}
 
 module.exports = ValidationMiddleware;
